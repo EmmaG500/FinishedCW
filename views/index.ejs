@@ -1,0 +1,850 @@
+<%- include('header.ejs'); %>
+<!-- about -->
+    <section id="about" class="container p-5" style="background-color:#F9F9F9">
+        <!-- heading -->
+        <h3 class='text-center pb-4 font-weight-light'><strong>ABOUT</strong></h3>
+        <div class='row'>
+            <div class='col-md-6 col-sm-12 pr-5 row'>
+                <!-- information -->
+                <div class="col-12">
+                    <h4 class='font-weight-light'><strong>Philosophy</strong></h4>
+                <p>The restaurant was named after visiting Thailand. We were taken by its unique look, vibrant culture
+                    and beautiful food.</p>
+                <p>At Thai Tanic we serve a seasonally changing multi-course menu inspired by our network of small
+                    artisan producers, foragers and farmers.</p>
+                <p>The kitchen, headed up by Peter Mckenna, blends traditional and contemporary technique creating a
+                    distinctly modern Thai fine dining experience.</p>
+                <p>Kevin Dow leads the front of house team with a style that is informal, relaxed but informed. A true
+                    reflection of the charm that Belfast is widely known for.</p>
+                <p>Our wine list is compact, made up of modern and classic styles from both the old and new world, with
+                    a emphasis on small scale, artisanal growers. </p>
+                </div>
+                <div class="col">
+                        <!-- contact details -->
+                <h4 class='font-weight-light pt-3'><strong>Details</strong></h4>
+                <p class='pb-0 mb-0 initialism'><strong>Address:</strong> 2 Eglantine Ave BT9 6DW</p>
+                <p class='pb-0 mb-0 initialism'><strong>Phone:</strong> 028 9066 8811</p>
+                <p class='initialism'><strong>Email:</strong> thai@tanic.co.uk</p>
+                </div>
+            </div>
+            <div class='col'>
+                <!-- map location -->
+                <h4 class='font-weight-light'><strong>Location</strong></h4>
+                <div class="embed-responsive embed-responsive-1by1">
+                    <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9248.886471363288!2d-5.954574498949515!3d54.58246898565135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48610892cdae023b%3A0xf56b8fc215d03240!2sThai%20Tanic!5e0!3m2!1sen!2suk!4v1650192810731!5m2!1sen!2suk" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- menu -->
+    <section id="menu" class="container p-5">
+        <!-- heading -->
+        <h3 class='text-center pb-1 font-weight-light'><strong>MENU</strong></h3>
+        <!-- specials -->
+        <% if(typeof user=='undefined' ) {%>
+            <!-- if user not logged in display only heading -->
+            <h5 class='text-center pt-3 pb-2 font-weight-light'><strong><u>SPECIALS</u></strong></h5>
+            <%} else {%>
+                <!-- display links to add dish and ingredients as well as specials heading -->
+                <div class="row">
+                    <div class="pt-3 col row">
+                        <div class="col-md-6 col-sm-1"></div>
+                        <div class="col-md-1 col-sm-0"></div>
+                        <div class="col-md-5 col-sm-10 row">
+                            <div class="px-0 col-4"><a class="fa-solid fa-plus pr-1" href="/addIngredient" style="text-decoration: none; color:black"></a>Add Ingredient</div>
+                            <div class="px-0 col-4"><a class="fa-solid fa-pencil pr-1" href="/editIngredient" style="text-decoration: none; color:black"></a>Edit Ingredient</div>
+                            <div class="px-0 col-4"><a class="fa-solid fa-plus pr-1" href="/addDish" style="text-decoration: none; color:black"></a>Add Dish</div>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div> 
+                </div>
+                <h5 class='text-center pb-2 font-weight-light col-12'><strong><u>SPECIALS</u></strong></h5>
+
+                <%}%>
+                <div class="container pb-2">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                        <!-- if user not logged in -->
+                        <% if(typeof user=='undefined' ) {%>
+                            <!-- for each visible dish, display name, intolerances, price and description -->
+                            <% dishes.forEach(function(dish){ %>
+                                <% if (dish.section==='Specials' && dish.visible){%>
+                                    <div class="col">
+                                        <p class="mb-0">
+                                            <strong class="text-left">
+                                                <%=(dish.name).toUpperCase()%>
+                                            </strong>
+                                            <span class="text-muted initialism">
+                                                <% if(dish.glutenFree){%>
+                                                    (GF)
+                                                <% }%>
+                                                <% if(dish.pescetarian){%>
+                                                    (P)
+                                                <% }%>
+                                                <% if(dish.vegan){%>
+                                                    (VE)
+                                                <% }%>
+                                                <% if(dish.vegetarian){%>
+                                                    (V)
+                                                <% }%>
+                                            </span>
+                                            <span class="text-right">
+                                                £<%=dish.price%>
+                                            </span>
+                                        </p>
+                                        <p class="mb-0">
+                                            <%=dish.description%>
+                                        </p>
+                                        <p>
+                                            <!-- display ingredients, in bold if it is an allergy -->
+                                            <small>
+                                                Ingredients: <% ingredients.forEach(function(ingredient){ %>
+                                                    <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                        <% if(ingredient.allergen) {%>
+                                                            <strong>
+                                                                <%=ingredient.name%>
+                                                            </strong>
+                                                        <%} else{ %>
+                                                            <%=ingredient.name%>
+                                                        <%}}%>
+                                                    <%})%>
+                                            </small>
+                                        </p>
+                                    </div>
+                                    <%}%>
+                                        <%})%>
+                                            <%} else {%>
+                                                <!-- display all dishes for logged in user -->
+                                                <% dishes.forEach(function(dish){ %>
+                                                    <% if (dish.section==='Specials' ){%>
+                                                        <div class="col">
+                                                            <div class="row">
+                                                                <div class="col-9">
+                                                                    <p class="mb-0">
+                                                                        <strong class="text-left">
+                                                                            <%=(dish.name).toUpperCase()%>
+                                                                        </strong>
+                                                                        <span class="text-muted initialism">
+                                                                            <% if(dish.glutenFree){%>
+                                                                                (GF)
+                                                                            <% }%>
+                                                                            <% if(dish.pescetarian){%>
+                                                                                (P)
+                                                                            <% }%>
+                                                                            <% if(dish.vegan){%>
+                                                                                (VE)
+                                                                            <% }%>
+                                                                            <% if(dish.vegetarian){%>
+                                                                                (V)
+                                                                            <% }%>
+                                                                        </span>
+                                                                        <span class="text-right">
+                                                                            £<%=dish.price%>
+                                                                        </span>
+                                                                    </p>
+                                                                    <p class="mb-0">
+                                                                        <%=dish.description%>
+                                                                    </p>
+                                                                    <p>
+                                                                        <!-- display ingredients, in bold if it is an allergy -->
+                                                                        <small>
+                                                                            Ingredients: 
+                                                                            <% ingredients.forEach(function(ingredient){ %>
+                                                                                <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                                                    <% if(ingredient.allergen) {%>
+                                                                                        <strong>
+                                                                                            <%=ingredient.name%>
+                                                                                        </strong>
+                                                                                    <%} else{ %>
+                                                                                        <%=ingredient.name%>
+                                                                                    <%}}%>
+                                                                                <%})%>
+                                                                        </small>
+                                                                    </p>
+                                                                </div>
+                                                                <!-- display options for changing visibility, editing, and deleting dishes -->
+                                                                <div class="col-3">
+                                                                    <class class="row row-cols-1">
+                                                                        <% if(dish.visible) {%>
+                                                                            <form action="/hide/:<%=dish._id%>"
+                                                                                method="POST" class="m-0 p-0">
+                                                                                <button type="submit" class="btn">
+                                                                                    <i class="fa-solid fa-eye col m-0"
+                                                                                        style="padding:0px; padding-left: 2px;"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        <%} else {%>
+                                                                            <form action="/show/:<%=dish._id%>"
+                                                                                method="POST" class="m-0 p-0">
+                                                                                <button type="submit" class="btn">
+                                                                                    <i class="fa-solid fa-eye-slash col m-0"
+                                                                                        style="padding:0px; padding-left: 2px;"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        <%}%>
+                                                                            <a class="fa-solid fa-pencil mx-0 px-0 pl-3 pr-1"
+                                                                                href="/editDish/:<%=dish._id%>"
+                                                                                style="text-decoration: none; color:black;"></a>
+                                                                            <form action="/delete/:<%=dish._id%>"
+                                                                                method="POST" class="m-0 p-0">
+                                                                                <button type="submit" class="btn">
+                                                                                    <i class="fa-solid fa-xmark col m-0"
+                                                                                        style="padding:0px; padding-left: 5px;"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                    </class>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <%}%>
+                                                <%})%>
+                                            <%}%>
+                </div>
+            </div>
+            <hr class="text-muted">
+
+                    <h5 class='text-center pt-3 pb-2 font-weight-light'><strong><u>APPETIZERS</u></strong></h5>
+                    <div class="container pb-2">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                            <!-- if user not logged in -->
+                            <% if(typeof user=='undefined' ) {%>
+                                <!-- for each visible dish, display name, intolerances, price and description -->
+                                <% dishes.forEach(function(dish){ %>
+                                    <% if (dish.section==='Appetizers' && dish.visible){%>
+                                        <div class="col">
+                                            <p class="mb-0">
+                                                <strong class="text-left">
+                                                    <%=(dish.name).toUpperCase()%>
+                                                </strong>
+                                                <span class="text-muted initialism">
+                                                    <% if(dish.glutenFree){%>
+                                                        (GF)
+                                                    <% }%>
+                                                    <% if(dish.pescetarian){%>
+                                                        (P)
+                                                    <% }%>
+                                                    <% if(dish.vegan){%>
+                                                        (VE)
+                                                    <% }%>
+                                                    <% if(dish.vegetarian){%>
+                                                        (V)
+                                                    <% }%>
+                                                </span>
+                                                <span class="text-right">
+                                                    £<%=dish.price%>
+                                                </span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <%=dish.description%>
+                                            </p>
+                                            <p>
+                                                <!-- display ingredients, in bold if it is an allergy -->
+                                                <small>
+                                                    Ingredients: <% ingredients.forEach(function(ingredient){ %>
+                                                        <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                            <% if(ingredient.allergen) {%>
+                                                                <strong>
+                                                                    <%=ingredient.name%>
+                                                                </strong>
+                                                            <%} else{ %>
+                                                                <%=ingredient.name%>
+                                                            <%}}%>
+                                                        <%})%>
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <%}%>
+                                            <%})%>
+                                                <%} else {%>
+                                                    <!-- display all dishes for logged in user -->
+                                                    <% dishes.forEach(function(dish){ %>
+                                                        <% if (dish.section==='Appetizers' ){%>
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <p class="mb-0">
+                                                                            <strong class="text-left">
+                                                                                <%=(dish.name).toUpperCase()%>
+                                                                            </strong>
+                                                                            <span class="text-muted initialism">
+                                                                                <% if(dish.glutenFree){%>
+                                                                                    (GF)
+                                                                                <% }%>
+                                                                                <% if(dish.pescetarian){%>
+                                                                                    (P)
+                                                                                <% }%>
+                                                                                <% if(dish.vegan){%>
+                                                                                    (VE)
+                                                                                <% }%>
+                                                                                <% if(dish.vegetarian){%>
+                                                                                    (V)
+                                                                                <% }%>
+                                                                            </span>
+                                                                            <span class="text-right">
+                                                                                £<%=dish.price%>
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="mb-0">
+                                                                            <%=dish.description%>
+                                                                        </p>
+                                                                        <p>
+                                                                            <!-- display ingredients, in bold if it is an allergy -->
+                                                                            <small>
+                                                                                Ingredients: 
+                                                                                <% ingredients.forEach(function(ingredient){ %>
+                                                                                    <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                                                        <% if(ingredient.allergen) {%>
+                                                                                            <strong>
+                                                                                                <%=ingredient.name%>
+                                                                                            </strong>
+                                                                                        <%} else{ %>
+                                                                                            <%=ingredient.name%>
+                                                                                        <%}}%>
+                                                                                    <%})%>
+                                                                            </small>
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- display options for changing visibility, editing, and deleting dishes -->
+                                                                    <div class="col-3">
+                                                                        <class class="row row-cols-1">
+                                                                            <% if(dish.visible) {%>
+                                                                                <form action="/hide/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%} else {%>
+                                                                                <form action="/show/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye-slash col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%}%>
+                                                                                <a class="fa-solid fa-pencil mx-0 px-0 pl-3 pr-1"
+                                                                                    href="/editDish/:<%=dish._id%>"
+                                                                                    style="text-decoration: none; color:black;"></a>
+                                                                                <form action="/delete/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-xmark col m-0"
+                                                                                            style="padding:0px; padding-left: 5px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                        </class>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <%}%>
+                                                    <%})%>
+                                                <%}%>
+                    </div>
+                </div>
+                <hr class="text-muted">
+                    <h5 class='text-center pt-3 pb-2 font-weight-light'><strong><u>MAINS</u></strong></h5>
+                    <div class="container pb-2">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                            <!-- if user not logged in -->
+                            <% if(typeof user=='undefined' ) {%>
+                                <!-- for each visible dish, display name, intolerances, price and description -->
+                                <% dishes.forEach(function(dish){ %>
+                                    <% if (dish.section==='Mains' && dish.visible){%>
+                                        <div class="col">
+                                            <p class="mb-0">
+                                                <strong class="text-left">
+                                                    <%=(dish.name).toUpperCase()%>
+                                                </strong>
+                                                <span class="text-muted initialism">
+                                                    <% if(dish.glutenFree){%>
+                                                        (GF)
+                                                    <% }%>
+                                                    <% if(dish.pescetarian){%>
+                                                        (P)
+                                                    <% }%>
+                                                    <% if(dish.vegan){%>
+                                                        (VE)
+                                                    <% }%>
+                                                    <% if(dish.vegetarian){%>
+                                                        (V)
+                                                    <% }%>
+                                                </span>
+                                                <span class="text-right">
+                                                    £<%=dish.price%>
+                                                </span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <%=dish.description%>
+                                            </p>
+                                            <p>
+                                                <!-- display ingredients, in bold if it is an allergy -->
+                                                <small>
+                                                    Ingredients: <% ingredients.forEach(function(ingredient){ %>
+                                                        <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                            <% if(ingredient.allergen) {%>
+                                                                <strong>
+                                                                    <%=ingredient.name%>
+                                                                </strong>
+                                                            <%} else{ %>
+                                                                <%=ingredient.name%>
+                                                            <%}}%>
+                                                        <%})%>
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <%}%>
+                                            <%})%>
+                                                <%} else {%>
+                                                    <!-- display all dishes for logged in user -->
+                                                    <% dishes.forEach(function(dish){ %>
+                                                        <% if (dish.section==='Mains' ){%>
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <p class="mb-0">
+                                                                            <strong class="text-left">
+                                                                                <%=(dish.name).toUpperCase()%>
+                                                                            </strong>
+                                                                            <span class="text-muted initialism">
+                                                                                <% if(dish.glutenFree){%>
+                                                                                    (GF)
+                                                                                <% }%>
+                                                                                <% if(dish.pescetarian){%>
+                                                                                    (P)
+                                                                                <% }%>
+                                                                                <% if(dish.vegan){%>
+                                                                                    (VE)
+                                                                                <% }%>
+                                                                                <% if(dish.vegetarian){%>
+                                                                                    (V)
+                                                                                <% }%>
+                                                                            </span>
+                                                                            <span class="text-right">
+                                                                                £<%=dish.price%>
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="mb-0">
+                                                                            <%=dish.description%>
+                                                                        </p>
+                                                                        <p>
+                                                                            <!-- display ingredients, in bold if it is an allergy -->
+                                                                            <small>
+                                                                                Ingredients: 
+                                                                                <% ingredients.forEach(function(ingredient){ %>
+                                                                                    <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                                                        <% if(ingredient.allergen) {%>
+                                                                                            <strong>
+                                                                                                <%=ingredient.name%>
+                                                                                            </strong>
+                                                                                        <%} else{ %>
+                                                                                            <%=ingredient.name%>
+                                                                                        <%}}%>
+                                                                                    <%})%>
+                                                                            </small>
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- display options for changing visibility, editing, and deleting dishes -->
+                                                                    <div class="col-3">
+                                                                        <class class="row row-cols-1">
+                                                                            <% if(dish.visible) {%>
+                                                                                <form action="/hide/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%} else {%>
+                                                                                <form action="/show/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye-slash col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%}%>
+                                                                                <a class="fa-solid fa-pencil mx-0 px-0 pl-3 pr-1"
+                                                                                    href="/editDish/:<%=dish._id%>"
+                                                                                    style="text-decoration: none; color:black;"></a>
+                                                                                <form action="/delete/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-xmark col m-0"
+                                                                                            style="padding:0px; padding-left: 5px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                        </class>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <%}%>
+                                                    <%})%>
+                                                <%}%>
+                    </div>
+                </div>
+                <hr class="text-muted">
+                    <h5 class='text-center pt-3 pb-2 font-weight-light'><strong><u>SIDE DISHES</u></strong></h5>
+                    <div class="container pb-2">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                            <!-- if user not logged in -->
+                            <% if(typeof user=='undefined' ) {%>
+                                <!-- for each visible dish, display name, intolerances, price and description -->
+                                <% dishes.forEach(function(dish){ %>
+                                    <% if (dish.section==='Side Dishes' && dish.visible){%>
+                                        <div class="col">
+                                            <p class="mb-0">
+                                                <strong class="text-left">
+                                                    <%=(dish.name).toUpperCase()%>
+                                                </strong>
+                                                <span class="text-muted initialism">
+                                                    <% if(dish.glutenFree){%>
+                                                        (GF)
+                                                    <% }%>
+                                                    <% if(dish.pescetarian){%>
+                                                        (P)
+                                                    <% }%>
+                                                    <% if(dish.vegan){%>
+                                                        (VE)
+                                                    <% }%>
+                                                    <% if(dish.vegetarian){%>
+                                                        (V)
+                                                    <% }%>
+                                                </span>
+                                                <span class="text-right">
+                                                    £<%=dish.price%>
+                                                </span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <%=dish.description%>
+                                            </p>
+                                            <p>
+                                                <!-- display ingredients, in bold if it is an allergy -->
+                                                <small>
+                                                    Ingredients: <% ingredients.forEach(function(ingredient){ %>
+                                                        <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                            <% if(ingredient.allergen) {%>
+                                                                <strong>
+                                                                    <%=ingredient.name%>
+                                                                </strong>
+                                                            <%} else{ %>
+                                                                <%=ingredient.name%>
+                                                            <%}}%>
+                                                        <%})%>
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <%}%>
+                                            <%})%>
+                                                <%} else {%>
+                                                    <!-- display all dishes for logged in user -->
+                                                    <% dishes.forEach(function(dish){ %>
+                                                        <% if (dish.section==='Side Dishes' ){%>
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <p class="mb-0">
+                                                                            <strong class="text-left">
+                                                                                <%=(dish.name).toUpperCase()%>
+                                                                            </strong>
+                                                                            <span class="text-muted initialism">
+                                                                                <% if(dish.glutenFree){%>
+                                                                                    (GF)
+                                                                                <% }%>
+                                                                                <% if(dish.pescetarian){%>
+                                                                                    (P)
+                                                                                <% }%>
+                                                                                <% if(dish.vegan){%>
+                                                                                    (VE)
+                                                                                <% }%>
+                                                                                <% if(dish.vegetarian){%>
+                                                                                    (V)
+                                                                                <% }%>
+                                                                            </span>
+                                                                            <span class="text-right">
+                                                                                £<%=dish.price%>
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="mb-0">
+                                                                            <%=dish.description%>
+                                                                        </p>
+                                                                        <p>
+                                                                            <!-- display ingredients, in bold if it is an allergy -->
+                                                                            <small>
+                                                                                Ingredients: 
+                                                                                <% ingredients.forEach(function(ingredient){ %>
+                                                                                    <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                                                        <% if(ingredient.allergen) {%>
+                                                                                            <strong>
+                                                                                                <%=ingredient.name%>
+                                                                                            </strong>
+                                                                                        <%} else{ %>
+                                                                                            <%=ingredient.name%>
+                                                                                        <%}}%>
+                                                                                    <%})%>
+                                                                            </small>
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- display options for changing visibility, editing, and deleting dishes -->
+                                                                    <div class="col-3">
+                                                                        <class class="row row-cols-1">
+                                                                            <% if(dish.visible) {%>
+                                                                                <form action="/hide/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%} else {%>
+                                                                                <form action="/show/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye-slash col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%}%>
+                                                                                <a class="fa-solid fa-pencil mx-0 px-0 pl-3 pr-1"
+                                                                                    href="/editDish/:<%=dish._id%>"
+                                                                                    style="text-decoration: none; color:black;"></a>
+                                                                                <form action="/delete/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-xmark col m-0"
+                                                                                            style="padding:0px; padding-left: 5px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                        </class>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <%}%>
+                                                    <%})%>
+                                                <%}%>
+                    </div>
+                </div>
+                <hr class="text-muted">
+                    <h5 class='text-center pt-3 pb-2 font-weight-light'><strong><u>DESSERTS</u></strong></h5>
+                    <div class="container pb-2">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                            <!-- if user not logged in -->
+                            <% if(typeof user=='undefined' ) {%>
+                                <!-- for each visible dish, display name, intolerances, price and description -->
+                                <% dishes.forEach(function(dish){ %>
+                                    <% if (dish.section==='Desserts' && dish.visible){%>
+                                        <div class="col">
+                                            <p class="mb-0">
+                                                <strong class="text-left">
+                                                    <%=(dish.name).toUpperCase()%>
+                                                </strong>
+                                                <span class="text-muted initialism">
+                                                    <% if(dish.glutenFree){%>
+                                                        (GF)
+                                                    <% }%>
+                                                    <% if(dish.pescetarian){%>
+                                                        (P)
+                                                    <% }%>
+                                                    <% if(dish.vegan){%>
+                                                        (VE)
+                                                    <% }%>
+                                                    <% if(dish.vegetarian){%>
+                                                        (V)
+                                                    <% }%>
+                                                </span>
+                                                <span class="text-right">
+                                                    £<%=dish.price%>
+                                                </span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <%=dish.description%>
+                                            </p>
+                                            <p>
+                                                <!-- display ingredients, in bold if it is an allergy -->
+                                                <small>
+                                                    Ingredients: <% ingredients.forEach(function(ingredient){ %>
+                                                        <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                            <% if(ingredient.allergen) {%>
+                                                                <strong>
+                                                                    <%=ingredient.name%>
+                                                                </strong>
+                                                            <%} else{ %>
+                                                                <%=ingredient.name%>
+                                                            <%}}%>
+                                                        <%})%>
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <%}%>
+                                            <%})%>
+                                                <%} else {%>
+                                                    <!-- display all dishes for logged in user -->
+                                                    <% dishes.forEach(function(dish){ %>
+                                                        <% if (dish.section==='Desserts' ){%>
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <p class="mb-0">
+                                                                            <strong class="text-left">
+                                                                                <%=(dish.name).toUpperCase()%>
+                                                                            </strong>
+                                                                            <span class="text-muted initialism">
+                                                                                <% if(dish.glutenFree){%>
+                                                                                    (GF)
+                                                                                <% }%>
+                                                                                <% if(dish.pescetarian){%>
+                                                                                    (P)
+                                                                                <% }%>
+                                                                                <% if(dish.vegan){%>
+                                                                                    (VE)
+                                                                                <% }%>
+                                                                                <% if(dish.vegetarian){%>
+                                                                                    (V)
+                                                                                <% }%>
+                                                                            </span>
+                                                                            <span class="text-right">
+                                                                                £<%=dish.price%>
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="mb-0">
+                                                                            <%=dish.description%>
+                                                                        </p>
+                                                                        <p>
+                                                                            <!-- display ingredients, in bold if it is an allergy -->
+                                                                            <small>
+                                                                                Ingredients: 
+                                                                                <% ingredients.forEach(function(ingredient){ %>
+                                                                                    <% if (dish.ingredients.includes(ingredient._id)) { %>
+                                                                                        <% if(ingredient.allergen) {%>
+                                                                                            <strong>
+                                                                                                <%=ingredient.name%>
+                                                                                            </strong>
+                                                                                        <%} else{ %>
+                                                                                            <%=ingredient.name%>
+                                                                                        <%}}%>
+                                                                                    <%})%>
+                                                                            </small>
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- display options for changing visibility, editing, and deleting dishes -->
+                                                                    <div class="col-3">
+                                                                        <class class="row row-cols-1">
+                                                                            <% if(dish.visible) {%>
+                                                                                <form action="/hide/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%} else {%>
+                                                                                <form action="/show/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-eye-slash col m-0"
+                                                                                            style="padding:0px; padding-left: 2px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <%}%>
+                                                                                <a class="fa-solid fa-pencil mx-0 px-0 pl-3 pr-1"
+                                                                                    href="/editDish/:<%=dish._id%>"
+                                                                                    style="text-decoration: none; color:black;"></a>
+                                                                                <form action="/delete/:<%=dish._id%>"
+                                                                                    method="POST" class="m-0 p-0">
+                                                                                    <button type="submit" class="btn">
+                                                                                        <i class="fa-solid fa-xmark col m-0"
+                                                                                            style="padding:0px; padding-left: 5px;"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                        </class>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <%}%>
+                                                    <%})%>
+                                                <%}%>
+                    </div>
+                </div>
+                <hr class="text-muted">
+                    <div class="container row pt-4">
+                        <div class="col-md-4 col-sm-12">
+                            <p class="row">
+                                <span class="col-md-6 col-sm-12">
+                                    <strong>Bold</strong> - allergen
+                                </span>
+                                <span class="col-md-6 col-sm-12">(V) - Vegetarian</span>
+                                <span class="col-md-6 col-sm-12">(VE)- Vegan</span>
+                                <span class="col-md-6 col-sm-12">(P) - Pescetarian</span>
+                                <span class="col-md-6 col-sm-12">(GF)- Gluten Free</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <p class="font-weight-bolder">Should you have any concerns about food allergies,
+                                intolerances, or specific dietary requirements, please speak to a member of
+                                staff before placing your order</p>
+                        </div>
+                    </div>
+                </div>
+    </section>
+    <!-- contact form -->
+    <section id="contact" class="container px-4 py-5" style="background-color:#F9F9F9">
+        <!-- heading -->
+        <h3 class='text-center pb-1 font-weight-light'><strong>CONTACT</strong></h3>
+        <h6 class='text-center font-weight-normal pt-3 pb-3'>If you have any further queries, contact us using the below
+            form.</h6>
+        <div class="row mx-auto w-50 bg-white rounded shadow-sm pb-4">
+            <div class="col mx-auto pb-3">
+                <!-- form -->
+                <form id="contact-form" name="contact-form" action="/sendEmail" method="POST">
+                    <div class="row mb-3 mt-3">
+                        <!-- contact name -->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required/>
+                            </div>
+                        </div>
+                        <!-- contact email -->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <input type="text" id="email" name="email" class="form-control" placeholder="Email" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <!-- message subject -->
+                        <div class="col-md-12">
+                            <div class="md-form">
+                                <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <!-- message -->
+                        <div class="col-md-12">
+                            <div class="md-form">
+                                <textarea type="text" id="message" name="message" rows="2"
+                                    class="form-control md-textarea" placeholder="Your message" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <% if (typeof user !="undefined"){%>
+                        <div class="row mb-3 d-none">
+                            <!-- pass info to server to determine what route to redirect to -->
+                            <div class="col-md-12">
+                                <div class="md-form">
+                                    <input class="form-check-input" type="checkbox" value="true" id="loggedin" name="loggedin" checked>
+                                </div>
+                            </div>
+                        </div>
+                    <%}%>
+                    <div class="text-center mx-auto">
+                        <button class="btn btn-block shadow-sm" style='background-color:#F5E9E9'
+                            type="submit">Send</button>
+                    </div>
+                </form>
+                <!-- submit -->
+                
+            </div>
+        </div>
+    </section>
+    <%- include('footer.ejs'); %>

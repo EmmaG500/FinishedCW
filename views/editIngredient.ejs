@@ -1,0 +1,40 @@
+<%- include('header.ejs') %>
+<section id="editIngredient" class="container px-4 pb-5 pt-4" style="background-color:#F9F9F9">
+    <div class="row ml-3">
+        <div class="col-12 mt-5 ml-0">
+            <h3 class='text-center font-weight-light'><strong>EDIT INGREDIENT</strong></h3>
+        </div>
+        
+            <% ingredients.forEach(function(ingredient){ %>
+                <div class="justify-content-center container col-5 pt-4 pb-4 bg-white rounded shadow-sm m-3 ml-5">
+                <!-- form -->
+                <h5 class='text-center font-weight-light'><strong><%=ingredient.name%></strong></h5>
+                <form id="editIngredient" name="editIngredient" action="/editIngredient/:<%=ingredient._id%>" method="POST">
+                    <div class="mb-3">
+                        <!-- ingredient name -->
+                        <div class="col-md-12">
+                          <div class="md-form">
+                            <label for="formGroupExampleInput">Name:</label>
+                            <input type="text" id="name" name="name" class="form-control" value="<%=ingredient.name%>" required/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <!-- is ingredient a common allergy -->
+                        <div class="ml-4 form-check">
+                          <input class="form-check-input" type="checkbox" value="true" id="allergen" name="allergen" <% if (ingredient.allergen){%> checked<%}%>>
+                          <label class="form-check-label" for="allergen" >
+                            Allergen
+                          </label>
+                        </div>
+                      </div>
+                  <!-- submit -->
+                  <div class="text-center mx-auto">
+                    <input style="background-color:#F5E9E9" type="submit" class="btn btn-block shadow-sm" value="Submit">
+                  </div>
+                </form>
+                </div>
+            <%})%> 
+    </div>
+  </section>
+<%- include('footer.ejs') %>

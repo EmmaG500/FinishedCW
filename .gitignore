@@ -1,3 +1,4 @@
 ./public/formatting.html
 ./node_modules
 ./.vscodenode_modules
+node_modules

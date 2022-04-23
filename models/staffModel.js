@@ -1,6 +1,4 @@
 const Datastore = require("nedb");
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 class UserDAO {
     constructor(dbFilePath) {
@@ -15,6 +13,7 @@ class UserDAO {
     }
     // password is bcrypt of password
     init() {
+        //populate users - new functionality for inserting or deleting as it is a public facing website
         this.db.insert({
             user: 'Molly.Ringwald',
             password:
@@ -26,21 +25,7 @@ class UserDAO {
         });
         return this;
     }
-    create(username, password) {
-        const that = this;
-        bcrypt.hash(password, saltRounds).then(function(hash) {
-            var entry = {
-                user: username,
-                password: hash,
-            };
-            that.db.insert(entry, function (err) {
-            if (err) {
-            console.log("Can't insert user: ", username);
-            }
-            });
-        });
-    }
-    lookup(user, cb) {
+    lookup(user, cb) { // find user
         this.db.find({'user': user}, function (err, entries) {
         if (err) {
             return cb(null, null);

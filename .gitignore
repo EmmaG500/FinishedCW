@@ -1,1 +1,3 @@
 ./public/formatting.html
+./node_modules
+./.vscode
